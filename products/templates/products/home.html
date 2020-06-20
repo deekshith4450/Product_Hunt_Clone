@@ -1,5 +1,39 @@
 {% extends 'base.html'%}
 
 {%block content%}
-    <h1>home</h1>
+<div class="container">
+    <div class="jumbotron mt-md-5" style="background-color: white;">
+        <h1>Home</h1>
+        <P></P>
+        {% for product in products.all %}
+        <div class="row mt-3">
+            <div class="col-3" onclick="window.location='{% url 'product' product.id %}';" style="cursor: pointer;">
+                <img src="{{product.icon.url}}" class="img-fluid">
+            </div>
+            
+            <div class="col-6" onclick="window.location='{% url 'product' product.id %}';"style="cursor: pointer;" >
+                <h4>{{product.title}}</h4>
+                <p>{{product.summary}}</p>
+            </div>
+
+            <div class="col-2">
+                <a href="javascript:{document.getElementById('upvote {{product.id}}').submit()}" style="text-decoration: none;">
+                    <button type="submit" class="btn" style="background-color: rgb(218, 85, 47); color: white;;">
+                        <i class="fi-xwsuxl-sort-up-solid"></i>UPVOTE {{product.votes_total}}
+                    </button>
+                </a>
+            </div>
+        </div>
+        <form id='upvote {{product.id}}' method='POST' action="{% url 'upvote' product.id %}">
+            {% csrf_token %}
+            <input type="hidden">
+        </form>
+        {%endfor%}
+
+    </div>
+</div>
+
+    
+    
+
 {%endblock%}
